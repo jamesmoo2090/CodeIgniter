@@ -37,7 +37,7 @@
 |
 */
 
-$autoload['packages'] = array('');
+$autoload['packages'] = array(APPPATH.'third_party');
 
 
 /*
@@ -64,7 +64,7 @@ $autoload['libraries'] = array('database');
 |	$autoload['helper'] = array('url', 'file');
 */
 
-$autoload['helper'] = array();
+$autoload['helper'] = array('url', 'form');
 
 
 /*
