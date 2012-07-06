@@ -53,5 +53,13 @@ class Admin extends CI_Controller {
 		session_destroy();
 		$this->load->view('login_view');
 	}
+	
+	/*	code snippet saved for later
+	 * 
+	 *  $this->form_validation->set_rules('first', 'First Name', 'required');
+        $this->form_validation->set_rules('last', 'Last Name', 'required');
+        $this->form_validation->set_rules('email_address', 'Email Address', 'valid_email|required');
+        $this->form_validation->set_rules('password', 'Password', 'required|max_length[20]|matches[passconf]|sha1');
+        $this->form_validation->set_rules('passconf', 'Password Confirmation', 'required');
+	 */
 }
-
