@@ -1,7 +1,7 @@
 
 
 		<!-- GET THE NAME OF THE USER FROM THE DATABASE -->
-		<div class='welcomeuser'><center>
+		
 		<?php  
 			echo "<h2> Welcome ";
 			foreach($myname->result() as$row)	
@@ -16,67 +16,52 @@
 			echo "<input type='submit'  value='Logout' name='logout' id='logout' />";
 			echo form_close(); 	
 		?>
-	</h1><p></p></center></div>
+	</h1>
 	<p>
 	<!-- LOGOUT BUTTON -->
 	
 	</p>
-		<div class='publicorprivate'><h2><center>Public Lists</h2></center>
+		<h3>Public Lists</h3><p></p>
 	<!-- GET ALL THE NAMES OF THE PUBLIC LISTS-->
-	<p>
+	<p></p>
 	
 
 		<?php echo form_open('welcome/createnewlist');
 		echo "<input type='hidden' value='privatelist' name='privatelist' id='privatelist'/>";
-		echo "<center><input type='submit' value='Create New Public List & Task' name='new_list' id='new_list'/></center>";       
+		echo "<input type='submit' value='Create New Public List & Task' name='new_list' id='new_list'/>";       
 		echo form_close();?>
-		<p>
-	</div>
-		
-		<p>
+	
 
 	<?php 
 		$count = 0;
 		
-
-		//gets the list name
 		foreach($distinctpublic->result() as$row)	
-		{//list	
+		{
 			
-			echo "<div class='listsonly'>";
 			$list_name =  $row->list_name;
-			echo "<center><h2>List Name: " . $list_name."</h2>";
+			echo "<p><b><ul class='rounded-list'><li><b>List Name: </b>" . $list_name . "</li></b>";
 			
-			//gets the task name
+			
 			foreach ($public->result() as $item)
-			{//task
+			{
 				
 				$task_name = $item->task_name;
 				$list = $item->list_name;
 				$description = $item->task_description;
 				$status = $item->task_status;
-				$file   = $item->file_url;
 				$count = $count + 1;
 				
-				//echo "<ul>";
+				echo "<ul>";
 				if ($count > 1)
 				{
-					//echo "<ul>";
+					echo "<ul>";
 				}
 				
 				if($list == $list_name)
-				{//group with list
-				
-					echo "<b>Task: </b>" . $task_name."<br>";
-					echo "<b>Description: </b>".$description."<br>";
-					echo "<b>Status: </b>". $status."<br>";
-					
-					if ($file != '')
-					{
-						echo '<b>File Link: </b> <a href="http://'.$file.'">Link to file</a>';
-					}
-			
-					
+				{
+					echo "<li><b>Task: </b>" . $task_name . "</li>";
+					echo "<li><b>Description: </b>".$description . "</li>";
+					echo "<li><b>Status: </b>". $status."</li></ul>";
 					
 					$attributes = array('class' => '', 'id' => '');
 					 
@@ -90,77 +75,63 @@
 					echo "&nbsp &nbsp &nbsp"; 
 					echo "<input type='submit'  value='Delete Task' name='delete_task' id='delete_task' />";        
 					echo form_close();
-					echo "</p>";
-				}//group with list
-				
-			}//task 
-			echo '</center></div><p>';
-		}//list
-	
+					
+				}
+				if ($count > 1)
+				{
+					echo "</ul></ul>";
+				}
+				echo "</ul>";
+			}	
+		}
 		if ($count == 0)
 		{
-			echo "<div class='listsonly'><center>";
 			echo "<p><i>You have no Public Lists/Tasks</i></p>";
-			echo "</center></div>";
 		}
 		
-
 	?>
 	
 	
-	
+	<hr />	
 	<!-- GET ALL THE NAMES OF THE PRIVATE LISTS BELONGING TO THE USER -->
 	<p>
-	<div class='publicorprivate'><h2><center>Private Lists</center></h2>
-	<p>
+	<h3>Private Lists</h3><p></p>
+	
 		<?php echo form_open('welcome/newprivate');
 		echo "<input type='hidden' value='privatelist' name='privatelist' id='privatelist'/>";
-		echo "<center><input type='submit' value='Create New Private List & Task' name='new_list' id='new_list'/></center>";       
+		echo "<input type='submit' value='Create New Private List & Task' name='new_list' id='new_list'/>";       
 		echo form_close();?>
-		
-	</div>
-	<p></p> 
+	
 	<?php 
 		$count = 0;
 		
-				//gets the list name
 		foreach($distinctprivate->result() as$row)	
-		{//list	
-			echo "<div class='listsonly'>";
-			$list_name =  $row->list_name;
-			echo "<center>";
-			echo "<h2>List Name: " . $list_name."</h2>";
+		{
 			
-			//gets the task name
+			$list_name =  $row->list_name;
+			echo "<p><b><ul><li>" . $list_name . "</li></b>";
+			
+			
 			foreach ($private->result() as $item)
-			{//task
+			{
 				
 				$task_name = $item->task_name;
 				$list = $item->list_name;
 				$description = $item->task_description;
 				$status = $item->task_status;
-				$file   = $item->file_url;
 				$count = $count + 1;
 				
-				//echo "<ul>";
+				echo "<ul>";
 				if ($count > 1)
 				{
-					//echo "<ul>";
+					echo "<ul>";
 				}
 				
 				if($list == $list_name)
-				{//group with list
-					
-					echo "<b>Task: </b>" . $task_name."<br>";
-					echo "<b>Description: </b>".$description."<br>";
-					echo "<b>Status: </b>". $status."<br>";
-					
-					if ($file != '')
-					{
-						echo '<b>File Link: </b> <a href="http://'.$file.'">Link to file</a>';
-					}
-			
-					
+				{
+					echo "<li><b>Task: </b>" . $task_name . "</li>";
+					echo "<li><b>Description: </b>".$description . "</li>";
+					echo "<li><b>Status: </b>". $status."</li></ul>";
 					
 					$attributes = array('class' => '', 'id' => '');
 					 
@@ -174,20 +145,20 @@
 					echo "&nbsp &nbsp &nbsp"; 
 					echo "<input type='submit'  value='Delete Task' name='delete_task' id='delete_task' />";        
 					echo form_close();
-					echo "</p>";
-				}//group with list
-				
-			}//task 
-			echo '</center></div><p>';
-		}//list
-	
+					
+				}
+				if ($count > 1)
+				{
+					echo "</ul></ul>";
+				}
+				echo "</ul>";
+			}	
+		}
 		if ($count == 0)
 		{
-			echo "<div class='listsonly'><center>";
 			echo "<p><i>You have no Private Lists/Tasks</i></p>";
-			echo "</center></div>";
 		}
 		
 	?>
-
+	
 

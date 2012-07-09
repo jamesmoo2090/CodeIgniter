@@ -44,14 +44,26 @@ class Admin extends CI_Controller {
 
 		}
 		//once the user is logged in
-		$this->load->view('login_view');
+		
+		//boilerplate changes
+		//$this->load->view('login_view');
+		$data = array (	 'title' => 'Todo List - Login',
+						 'main_content' => 'login_view'
+						 );
+		$this->load->view('template', $data);
 	}
 
 	//logout function for the user
 	public function logout()
 	{
+		//boilerplate
+		//$this->load->view('login_view');
 		session_destroy();
-		$this->load->view('login_view');
+		$data = array (	 'title' => 'Todo List - Login',
+						 'main_content' => 'login_view'
+						 );
+		$this->load->view('template', $data);
+
 	}
 	
 	/*	code snippet saved for later

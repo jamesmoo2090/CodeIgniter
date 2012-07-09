@@ -27,7 +27,13 @@ class Register extends CI_Controller {
 		
 		if ($this->form_validation->run() == FALSE) // validation hasn't been passed
 		{
-			$this->load->view('register_view');
+			//boiler plate
+			//$this->load->view('register_view');
+			
+			$data['title']       = 'Register New Account';
+			$data['main_content']= 'register_view';
+						 
+		$this->load->view('template',$data);
 		}
 		else // passed validation proceed to post success logic
 		{
@@ -57,8 +63,7 @@ class Register extends CI_Controller {
 	}
 	function success()
 	{
-			echo 'this form has been successfully submitted with all validation being passed. All messages or logic here. Please note
-			sessions have not been used and would need to be added in to suit your app';
+			redirect(admin);
 	}
 }
 ?>
