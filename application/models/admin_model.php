@@ -23,6 +23,13 @@ class Admin_model extends CI_Model
 			// person has account with us
          	return $q->row();
       	}
+		if ($q->num_rows == 0)
+		{
+			echo '<div style="background-color:red">';
+			echo '<blink><center><b>';
+			echo 'LOGIN FAILED - Check Email & Password';
+			echo '</blink></center></b></div>';
+		}
       	return false;
    }
 	

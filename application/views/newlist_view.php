@@ -6,11 +6,50 @@ $email = $_SESSION['username'];
 
 
 ?>       
+
+	<script>
+		function pop(whoclicked) 
+		{
+			//alert(whoclicked);
+			where = document.getElementById('list_name');
+			where.value = whoclicked;
+		}
+	</script>
+
         
         <input id="email_address" type="hidden" name="email_address" maxlength="256" value="<?php echo set_value('email_address', $email); ?>"  />
 		<input id="public_task" type="hidden" name="public_task" maxlength="256" value="<?php echo set_value('public_task', 'true'); ?>"  />
 <p>
-        <label for="list_name">Enter a List Name <span class="required">(required field)</span></label>
+	<?php
+	//LIST AVAILABLE LISTS DROPDOWN =================================================
+	
+	echo '<b>For this task, click on one of the lists below:</b><p>';
+	echo "<b><u>Public Lists</u></b><br>";
+	foreach ($publiclists->result() as $item)
+	{
+		//$options[] = $item->list_name;
+		$li = $item->list_name;
+		echo "&nbsp - &nbsp";
+		echo '<i><b><span name="'.$li.'" id="'.$li.'" value="'.$li.'" onclick="pop(this.id)" >'.$li.'</span><b></i>';
+		echo '<br>';
+	}
+
+	/*
+	echo "<p><b><u>Private Lists</u></b><br>";
+	foreach ($privatelists->result() as $item)
+	{
+		$options[] = $item->list_name;
+		$li = $item->list_name;
+		echo "&nbsp - &nbsp";
+		echo '<i><b><span name="'.$li.'" id="'.$li.'" value="'.$li.'" onclick="pop(this.id)" >'.$li.'</span><b></i>';
+		echo '<br>';
+	
+	}*/
+?>
+
+		<p></p>
+		
+        <label for="list_name">Or type in a new list name: <span class="required">(required field)</span></label>
         <?php echo form_error('list_name'); ?>
         <br /><input id="list_name" type="text" name="list_name" maxlength="256" value="<?php echo set_value('list_name'); ?>"  />
 </p>

@@ -18,6 +18,7 @@ class Welcome extends CI_Controller
 		$this->load->database();
 		$this->load->helper('form');
 		$this->load->helper('url');
+		$this->load->library('upload');
 		//s$this->load->model('todolist_model');
 	}
 	
@@ -115,6 +116,16 @@ class Welcome extends CI_Controller
 			//boilerplate					   
 			//$this->load->view('edit_view',$editdata);
 			
+			// ============== EDITING FOR GETTING ALL PUBLIC LISTS ===================================
+			$useris = $_SESSION['username'];
+			
+			$prlists = 'SELECT list_name FROM todolist WHERE email_address="'.$useris.'" AND public_task="false" GROUP BY list_name';
+			$pblists = 'SELECT list_name FROM todolist WHERE public_task="true" GROUP BY list_name';
+			
+			$editdata['privatelists'] = $this->db->query($prlists);
+			$editdata['publiclists'] = $this->db->query($pblists);
+			
+			//================= SEND TO THE VIEW TEMPLATE ============================================
 						
 			$editdata['title'] = 'Edit Task';
 			$editdata['main_content'] = 'edit_view';
@@ -127,8 +138,17 @@ class Welcome extends CI_Controller
 
 	function createnewlist()
 	{
-		//boilerplate
-		//$this->load->view('newlist_view');
+		// ============== EDITING FOR GETTING ALL PUBLIC LISTS ===================================
+		$useris = $_SESSION['username'];
+			
+		$prlists = 'SELECT list_name FROM todolist WHERE email_address="'.$useris.'" AND public_task="false" GROUP BY list_name';
+		$pblists = 'SELECT list_name FROM todolist WHERE public_task="true" GROUP BY list_name';
+			
+		$editdata['privatelists'] = $this->db->query($prlists);
+		$editdata['publiclists'] = $this->db->query($pblists);
+			
+		//================= SEND TO THE VIEW TEMPLATE ============================================
+						
 		$editdata['title'] = 'New List & Task';
 		$editdata['main_content'] = 'newlist_view';
 			
@@ -138,8 +158,17 @@ class Welcome extends CI_Controller
 	
 	function newprivate()
 	{
-		//boilerplate
-		//$this->load->view('private_view');
+		// ============== EDITING FOR GETTING ALL PUBLIC LISTS ===================================
+		$useris = $_SESSION['username'];
+			
+		$prlists = 'SELECT list_name FROM todolist WHERE email_address="'.$useris.'" AND public_task="false" GROUP BY list_name';
+		$pblists = 'SELECT list_name FROM todolist WHERE public_task="true" GROUP BY list_name';
+			
+		$editdata['privatelists'] = $this->db->query($prlists);
+		$editdata['publiclists'] = $this->db->query($pblists);
+			
+		//================= SEND TO THE VIEW TEMPLATE ============================================
+		
 		$editdata['title'] = 'New List & Task';
 		$editdata['main_content'] = 'newprivatelist';
 			
@@ -266,9 +295,132 @@ class Welcome extends CI_Controller
 	{
 		redirect(welcome);
 	}
-}
 	
+	public function filemedia()
+	{
+		//gets the name of the list 
+		$this->form_validation->set_rules('list_name', 'List Name', 'required|max_length[256]');	
+		$this->form_validation->set_error_delimiters('<br /><span class="error">', '</span>');
+		$this->form_validation->run();
+		//echo "validation ran";
+		
+		$form_data = array('list' => set_value('list_name'));
+		$list = $form_data['list'];
+		
+		//echo $list;
+		
+		//redirect to the view for work being done
+		$editdata['list_name'] = $list;
+		$editdata['title'] = 'New List & Task';
+		$editdata['main_content'] = 'file_view';
+			
+		$this->load->view('template', $editdata);
+		
+		
+	}
 
+	public function do_upload()
+	{
+				
+		if (isset($_POST['submit']))
+    	{
+        	$this->load->library('upload');
+ 
+	        // Check if there was a file uploaded - there are other ways to
+    	    // check this such as checking the 'error' for the file - if error
+        	// is 0, you are good to code
+        	if (!empty($_FILES['userfile']['name']))
+        	{
+	            // Specify configuration for File 1
+	            $config['upload_path'] = 'uploads/';
+	            $config['allowed_types'] = 'mp4|mp3';
+				$config['overwrite'] = TRUE;
+				$config['remove_spaces'] = TRUE;
+				
+	        	// Initialize config for File 1
+	            $this->upload->initialize($config);
+	 
+	 			
+	 			//get the file name 
+	 			$fileUploaded = $_FILES['userfile']['name'];
+					
+				//add _ for all the spaces in the file name
+				$this->load->helper('inflector');
+				$fileUploaded = underscore($fileUploaded);
+				
+				//get the list name this file should be associated with
+				$list_name = $_POST['list_name'];
+					
+				$saveDB['filename']  = $fileUploaded;
+				$saveDB['list_name'] = $list_name;	
+				$this->load->model('file_model');	
+					
+	            // Upload file 1
+	            if ($this->upload->do_upload('userfile'))
+	            {
+	                //$data = $this->upload->data();
+	                $sendToDB = $this->file_model->SaveFile($saveDB);
+	                
+					if ($sendToDB == TRUE)
+					{
+						$data['title']        = 'Upload Successful';
+						$data['main_content'] = 'filesuccess_view';
+						//echo "FILE SUCCESS";
+						$this->load->view('template',$data);
+		
+					}
+					if ($sendToDB == FALSE)
+					{
+						$data['title']        = 'Failed to Upload';
+						$data['main_content'] = 'filefailure_view';
+						//echo "File Failure";
+						$this->load->view('template',$data);
+					}
+					
+	            }
+            	else
+	            {
+	                echo $this->upload->display_errors();
+	            }
+			}
+		}
+	}
+
+	public function delete_file()
+	{
+		$this->form_validation->set_rules('list_name', 'List Name', 'required|max_length[256]');			
+		$this->form_validation->set_rules('file_name', 'File Name', 'required|max_length[512]');	
+		$this->form_validation->set_error_delimiters('<br /><span class="error">', '</span>');
+		$this->form_validation->run();
+		//echo "validation ran";
+		
+		$form_data = array( 'list' => set_value('list_name'),
+							'file' => set_value('file_name')
+							);
+							
+		$list = $form_data['list'];
+		$file = $form_data['file'];
+		
+		$data['list_name'] = $list;
+		$data['file_name'] = $file;
+		
+		$this->load->model('file_model');
+		$sent = $this->file_model->DeleteFile($data);
+		
+		if ($sent == TRUE)
+		{
+			$data['title']        = 'File is being deleted';
+			$data['main_content'] = 'deleted_view';
+			//echo "FILE SUCCESS";
+			$this->load->view('template',$data);
+		}
+		else 
+		{
+			echo "failure";
+		}		
+		
+	}	
+}
 
 /* End of file welcome.php */
 /* Location: ./application/controllers/welcome.php */

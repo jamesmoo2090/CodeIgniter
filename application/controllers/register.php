@@ -17,13 +17,13 @@ class Register extends CI_Controller {
 	function index()
 	{
 		//START THE FORM VALIDATION
-		$this->form_validation->set_rules('first_name', 'first_name', 'max_length[40]');			
-		$this->form_validation->set_rules('last_name', 'last_name', 'max_length[40]');	
-		$this->form_validation->set_rules('email_address', 'email_address', 'valid_email|required','max_length[50]');			
-		$this->form_validation->set_rules('password', 'password', 'max_length[128]');
-			
-		$this->form_validation->set_error_delimiters('<br /><span class="error">', '</span>');
+		$this->form_validation->set_rules('first_name', 'first_name', 'min_length[2]|required','max_length[40]|required','required');			
+		$this->form_validation->set_rules('last_name', 'last_name', 'min_length[2]|required','max_length[40]|required','required');	
+		$this->form_validation->set_rules('email_address', 'email_address', 'valid_email|required','max_length[50]|required','required');			
+		$this->form_validation->set_rules('password', 'password', 'min_length[4]|required','max_length[128]|required','required');
+		$this->form_validation->set_error_delimiters('<br /><span class="error" style="color:red"><b>', '</b></span>');
 	
+		
 		
 		if ($this->form_validation->run() == FALSE) // validation hasn't been passed
 		{
@@ -33,7 +33,7 @@ class Register extends CI_Controller {
 			$data['title']       = 'Register New Account';
 			$data['main_content']= 'register_view';
 						 
-		$this->load->view('template',$data);
+			$this->load->view('template',$data);
 		}
 		else // passed validation proceed to post success logic
 		{
@@ -54,11 +54,7 @@ class Register extends CI_Controller {
 			{
 				redirect('register/success');   // or whatever logic needs to occur
 			}
-			else
-			{
-			echo 'An error occurred saving your information. Please try again later';
-			// Or whatever error handling is necessary
-			}
+			
 		}
 	}
 	function success()

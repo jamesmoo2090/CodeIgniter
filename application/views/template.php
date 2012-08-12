@@ -38,6 +38,15 @@
        Modernizr enables HTML5 elements & feature detects for optimal performance.
        Create your own custom Modernizr build: www.modernizr.com/download/ -->
   <script src="<?php echo base_url().'js/libs/modernizr-2.5.3.min.js';?>"></script>
+  
+  
+  <!--------------------- THIS IS THE VIDEO PLAYER ------------------------------>
+  
+
+	<link href="http://vjs.zencdn.net/c/video-js.css" rel="stylesheet">
+	<script src="http://vjs.zencdn.net/c/video.js"></script>
+
+
 </head>
 <body>
   <!-- Prompt IE 6 users to install Chrome Frame. Remove this if you support IE 6.

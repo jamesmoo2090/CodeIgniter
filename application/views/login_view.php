@@ -44,9 +44,11 @@
 		<?php echo validation_errors(); ?>
 	
 		<!--- LINK TO THE REGISTRATION PAGE -->
+		<b>
 		<a href="<?php echo site_url('register') ?>">Create Account</a>
-		
-		
+		&nbsp
+		<a href="<?php echo site_url('forgot') ?>">Forgot Password</a>
+		</b>
 		</div>
 		
 		

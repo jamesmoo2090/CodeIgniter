@@ -19,16 +19,63 @@
 <?php // Change the css classes to suit your needs    
 
 $attributes = array('class' => '', 'id' => '');
-echo form_open('welcome/edittask', $attributes); 
+echo form_open_multipart('welcome/edittask', $attributes); 
+
 
 	
 ?>
+
+
     	<input id="task_id" type="hidden" name="task_id" maxlength="256" value="<?php echo set_value('task_id', $taskid); ?>"  />
     	<input id="email_address" type="hidden" name="email_address" maxlength="256" value="<?php echo set_value('email_address',$email); ?>"  />
 
 
 <br/>
-        <label for="public_task">Make List & Task Public or Private?</label>
+<h1>Edit Task</h1>
+	<!--- Function to populate the List Field Name --->
+	
+	<script>
+		function pop(whoclicked) 
+		{
+			//alert(whoclicked);
+			where = document.getElementById('list_name');
+			where.value = whoclicked;
+		}
+	</script>
+
+<?php
+	//LIST AVAILABLE LISTS DROPDOWN =================================================
+	
+	echo '<b>For this task, click on one of the lists below:</b><p>';
+	echo "<b><u>Public Lists</u></b><br>";
+	foreach ($publiclists->result() as $item)
+	{
+		//$options[] = $item->list_name;
+		$li = $item->list_name;
+		echo "&nbsp - &nbsp";
+		echo '<i><b><span name="'.$li.'" id="'.$li.'" value="'.$li.'" onclick="pop(this.id)" >'.$li.'</span><b></i>';
+		echo '<br>';
+	}
+
+	echo "<p><b><u>Private Lists</u></b><br>";
+	foreach ($privatelists->result() as $item)
+	{
+		$options[] = $item->list_name;
+		$li = $item->list_name;
+		echo "&nbsp - &nbsp";
+		echo '<i><b><span name="'.$li.'" id="'.$li.'" value="'.$li.'" onclick="pop(this.id)" >'.$li.'</span><b></i>';
+		echo '<br>';
+	
+	}
+?>
+
+
+
+
+
+
+
+        <p><label for="public_task">Make List & Task Public or Private?</label>
         <?php echo form_error('public_task');
         echo '<br />';
 		// Change or Add the radio values/labels/css classes to suit your needs
@@ -55,7 +102,7 @@ echo form_open('welcome/edittask', $attributes);
 <p>
         <label for="list_name">List Name <span class="required">(required field)</span></label>
         <?php echo form_error('list_name'); ?>
-        <br /><input id="list_name" type="text" name="list_name" maxlength="256" value="<?php echo set_value('list_name',$list); ?>"  />
+        <br /><input id="list_name" type="text" name="list_name" maxlength="256" value="<?php echo set_value('list_name',$list); ?>"/>
 </p>
 
 <p>

@@ -10,12 +10,28 @@
 				echo " ";
 				echo $row->last_name;
 				
+				echo "<br><b><a href=".site_url('admin/profile').">My Profile</a></b>";
+				
 			}
+			//echo '<br>'.$_SESSION['username'];
 			echo "</h2>";
 			echo form_open('admin/logout'); 
 			echo "<input type='submit'  value='Logout' name='logout' id='logout' />";
 			echo form_close(); 	
+			
 		?>
+	<br>
+	
+	
+	
+	<?php
+			//$em = $_SESSION['username'];
+			//echo form_open('profile/whoami($em)'); 
+			//echo "<input type='submit'  value='My Profile' name='profile' id='profile' />";
+			//echo form_close(); 
+	?>
+	
+	
 	</h1><p></p></center></div>
 	<p>
 	<!-- LOGOUT BUTTON -->
@@ -47,6 +63,20 @@
 			$list_name =  $row->list_name;
 			echo "<center><h2>List Name: " . $list_name."</h2>";
 			
+			// HERE IS THE REDIRECT LINK TO FILES ON THIS LIST
+			
+			$att = array('class' => '', 'id' => '');
+			echo form_open('welcome/filemedia', $att);
+			echo '<input type="hidden" name="list_name" value="'. $list_name.'"/>';	
+			echo form_submit('submit', 'Files for this List');		
+			echo form_close();
+			echo "</p>";
+			
+			// HERE IS THE REDIRECT LINK TO FILES ON THIS LIST
+			
+			
+			
+			
 			//gets the task name
 			foreach ($public->result() as $item)
 			{//task
@@ -73,7 +103,7 @@
 					
 					if ($file != '')
 					{
-						echo '<b>File Link: </b> <a href="http://'.$file.'">Link to file</a>';
+						echo '<b>Internet Link: </b> <a href="http://'.$file.'">Link to file</a>';
 					}
 			
 					
@@ -131,6 +161,20 @@
 			echo "<center>";
 			echo "<h2>List Name: " . $list_name."</h2>";
 			
+						// HERE IS THE REDIRECT LINK TO FILES ON THIS LIST
+			
+			$att = array('class' => '', 'id' => '');
+			echo form_open('welcome/filemedia', $att);
+			echo '<input type="hidden" name="list_name" value="'. $list_name.'"/>';	
+			echo form_submit('submit', 'Files for this list');		
+			echo form_close();
+			echo "</p>";
+			
+			// HERE IS THE REDIRECT LINK TO FILES ON THIS LIST
+			
+		
+			 
+			
 			//gets the task name
 			foreach ($private->result() as $item)
 			{//task
@@ -157,7 +201,7 @@
 					
 					if ($file != '')
 					{
-						echo '<b>File Link: </b> <a href="http://'.$file.'">Link to file</a>';
+						echo '<b>Internet Link: </b> <a href="http://'.$file.'">Link to file</a>';
 					}
 			
 					
